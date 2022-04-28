@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<script src="./js/main.js" type='module' defer></script>
+<title>Formulário do Restaurante</title>
+</head>
+<style>
+	.checkboxes {
+		display: flex;
+		justify-content: space-between;
+	}
+	
+	img{
+		width:150px;
+	}
+</style>
+<body>
+	<header th:replace="fragments/padrao :: cabecalho"></header>
+
+	<div class="container">
+		<h1>Cadastro de Restaurantes</h1>
+		<form class="col s12" action="salvarRestaurante" method="post"
+			enctype="multipart/form-data" accept-charset="utf-8">
+			<input type="hidden" name="id" th:value="${restaurantes?.id}">
+			<div class="row">
+				<div class="input-field col s6">
+					<input placeholder="" id="nome" type="text"
+						th:value="${restaurantes?.nome}" name="nome" class="validate">
+					<label for="nome">Nome</label>
+				</div>
+				<div class="input-field col s6">
+					<select name="tipoRestaurante.id">
+						<option select="selected" disabled="disabled">Selecione o
+							tipo de restaurante</option>
+						<option th:each="t: ${tipos}" th:value="${t.id}"
+							th:text="${t.nome}"
+							th:selected="${t.id == restaurante?.tipoRestaurante?.id}"></option>
+					</select> <label>Tipo de Restaurante</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input id="descricao" type="text"
+						th:value="${restaurantes?.descricao}" name="descricao"
+						class="validate"> <label for="descricao">Descrição</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="cep" type="text" th:value="${restaurantes?.cep}"
+						name="cep" class="validate"> <label for="cep">CEP</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input id="endereco" type="text"
+						th:value="${restaurantes?.endereco}" name="endereco"
+						class="validate"> <label for="endereco">Endereço</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="numero" type="text" th:value="${restaurantes?.numero}"
+						name="numero" class="validate"> <label for="numero">Número</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input placeholder="" id="bairro" type="text"
+						th:value="${restaurantes?.bairro}" name="bairro" class="validate">
+					<label for="bairro">Bairro</label>
+				</div>
+				<div class="input-field col s6">
+					<input placeholder="" id="cidade" type="text"
+						th:value="${restaurantes?.cidade}" name="cidade" class="validate">
+					<label for="cidade">Cidade</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input placeholder="" id="estado" type="text"
+						th:value="${restaurantes?.estado}" name="estado" class="validate">
+					<label for="estado">Estado</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="complemento" type="text"
+						th:value="${restaurantes?.complemento}" name="complemento"
+						class="validate"> <label for="complemento">Complemento</label>
+				</div>
+			</div>
+			<div class="file-field input-field">
+				<div class="btn">
+					<span>Fotos</span> <input type="file" name="fileFotos" multiple
+						accept="image/*">
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text"
+						placeholder="Upload one or more files">
+				</div>
+			</div>
+			
+			<br /><br />
+			<input type="hidden" th:value="${restaurantes?.fotos}" name="fotos">
+			
+
+			<div th:if="${restaurantes?.fotos?.length > 0}">
+				<h6>Fotos Cadastradas</h6>
+				<div>
+					<ul>
+						<li th:each="foto, i : ${restaurantes?.verFotos()}">
+							<a th:href="${foto}" target="_blank"> <img th:src="${foto}"></a>
+							<a th:href="@{/excluirFotoRestaurante(idRestaurante=${restaurantes.id}, numFoto=${i.index})}">
+								<i class="material-icons">delete_forever</i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="checkboxes">
+				<p>
+					<label> <input type="checkbox" name="espacoInfantil"
+						th:checked="${restaurantes?.espacoInfantil}" /> <span>Espaço
+							Infantil</span>
+					</label>
+				</p>
+				<p>
+					<label> <input type="checkbox" name="estacionamento"
+						th:checked="${restaurantes?.estacionamento}" /> <span>Estacionamento</span>
+					</label>
+				</p>
+				<p>
+					<label> <input type="checkbox" name="driveThru"
+						th:checked="${restaurantes?.driveThru}" /> <span>Drive Thru</span>
+					</label>
+				</p>
+				<p>
+					<label> <input type="checkbox" name="manobrista"
+						th:checked="${restaurantes?.manobrista}" /> <span>Manobrista</span>
+					</label>
+				</p>
+				<p>
+					<label> <input type="checkbox" name="delivery"
+						th:checked="${restaurantes?.delivery}" /> <span>Delivery</span>
+					</label>
+				</p>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input id="atracoes" type="text"
+						th:value="${restaurantes?.atracoes}" name="atracoes"
+						class="validate"> <label for="atracoes">Atrações</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="formasPagamento" type="text"
+						th:value="${restaurantes?.formasPagamento}" name="formasPagamento"
+						class="validate"> <label for="formasPagamento">Formas
+						de Pagamento</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input id="site" type="text" th:value="${restaurantes?.site}"
+						name="site" class="validate"> <label for="site">Site</label>
+				</div>
+				<div class="input-field col s6">
+					<input id="telefone" type="text"
+						th:value="${restaurantes?.telefone}" name="telefone"
+						class="validate"> <label for="telefone">Telefone</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input id="redesSociais" type="text"
+						th:value="${restaurantes?.redesSociais}" name="redesSociais"
+						class="validate"> <label for="redesSociais">Redes
+						Sociais</label>
+				</div>
+			</div>
+			<button class="btn waves-effect waves-light" type="submit"
+				name="action">
+				Salvar <i class="material-icons right">send</i>
+			</button>
+		</form>
+	</div>
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="jquery.mask.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+
+	<script>
+		$(document).ready(function() {
+			$('select').formSelect();
+			$('#cep').mask('00000-000');
+
+		})
+	</script>
+</body>
+</html>

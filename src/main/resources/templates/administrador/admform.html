@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+
+
+<style>
+	body {
+		background-color: #ffece5;
+	}
+	
+	.alertamensagem {
+		margin-left: 50px;
+		text-align: center;
+		padding: 20px;
+		border-radius: 20px;
+		color: #fff;
+		font-size: 18px;
+	}
+	
+	.msgerro {
+		background: linear-gradient(to bottom, #9900cc 0%, #ff99ff 100%);
+	}
+	
+	.msgsucesso {
+		background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+	}
+	
+	.page-footer {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		left: 0;
+	}
+</style>
+
+<title>Formulário do Administrador</title>
+</head>
+<body>
+	<header th:replace="fragments/padrao :: cabecalho"></header>
+	<div class="container">
+		<h1>Cadastro de Administrador</h1>
+
+		<div class="row">
+
+			<form class="col s12" method="post" action="salvarAdministrador">
+				<input type="hidden" th:value="${admin?.id}" name="id">
+
+				<div class="row">
+					<div class="input-field col s12">
+						<i class="material-icons prefix">account_circle</i> <input
+							id="icon_prefix" name="nome" type="text" class="validate"
+							th:value="${admin?.nome}"> <label for="icon_prefix">Nome</label>
+
+					</div>
+
+					<div class="input-field col s6">
+						<i class="material-icons prefix">email</i> <input id="icon_prefix"
+							name="email" type="text" class="validate"
+							th:value="${admin?.email}"> <label for="icon_prefix">Email</label>
+
+					</div>
+
+					<div class="row">
+						<div class="input-field col s6">
+							<i class="material-icons prefix">accessibility</i> <input
+								id="icon_prefix" name="senha" type="password" class="validate">
+							<label for="icon_prefix">Senha</label>
+
+						</div>
+					</div>
+
+					<button class="btn waves-effect waves-light" type="submit"
+						name="action">
+						Salvar <i class="material-icons right">send</i>
+					</button>
+			</form>
+
+			<div th:replace="fragments/mensagem"></div>
+
+		</div>
+	</div>
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			console.log("passou aqui");
+			$(".dropdown-trigger").dropdown();
+		});
+	</script>
+</body>
+</html>

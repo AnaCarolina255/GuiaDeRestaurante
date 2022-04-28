@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+<title>Lista de Restaurantes</title>
+</head>
+<style>
+
+	body{
+		background-color:#ffece5;
+	}
+	
+	.container-nav{
+		width:35%;
+		position: relative;
+		left:30%;
+	}
+	
+	/*.container-select{
+		position:relative;
+	}*/
+
+	.pagination {
+		position: absolute;
+		top: 85%;
+		left: 45%;
+	}
+	.page-footer{
+		position: absolute;
+		top: 92.8%;
+		width:100%;
+	}
+	
+</style>
+<body>
+
+	<header th:replace="fragments/padrao :: cabecalho"></header>
+	<br>
+
+  <nav class="container-nav">
+    <div class="nav-wrapper">
+       <form action="/buscarTodos" method="get" >  
+        <div class="input-field">
+          
+          <input name="todos" id="search" type="search" required>
+          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+          <i class="material-icons">close</i>
+          <!--  <div class="container-select">
+		    <select name="opcoes">
+		      <option value="0">Selecione...</option>
+		      <option value="1">Palavra-Chave</option>
+		      <option value="2">Nome</option>
+		      <option value="3">Descrição</option>
+		    </select>
+		  </div>-->
+		  <input type="submit" hidden />
+		  
+        </div>
+      </form>
+    </div>
+  </nav>
+  <br>
+
+	<div class="container">
+		<table class="highlight">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Cep</th>
+					<th>Tipo Restaurante</th>
+					<th>Alterar</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="restaurante:${restaurantes}">
+					<td th:text="${restaurante.id}"/>
+					<td th:text="${restaurante.nome}"/>
+					<td th:text="${restaurante.cep}"/>
+					<td th:text="${restaurante.tipoRestaurante}"/>
+					<td><a th:href="@{/alterarRestaurante(id=${restaurante.id})}">Alterar</a></td>
+					<td><a th:href="@{/excluirRest(id=${restaurante.id})}">Excluir</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<ul class="pagination">
+			<li th:class="${paginaAtual == 1 ? 'disabled' : ''}"><a
+				th:href="${paginaAtual > 1 ? paginaAtual - 1 : '#'}"><i
+					class="material-icons">chevron_left</i></a></li>
+
+			<li th:each="p:${numPaginas}"
+				th:class="${paginaAtual == p ? 'active' : 'waves-effect'}"><a
+				th:href="${p}"><span th:text="${p}"></span></a></li>
+
+
+			<li
+				th:class="${paginaAtual == totalPaginas ? 'disabled' : 'waves-effect'}">
+				<a th:href="${paginaAtual < totalPaginas ? paginaAtual+1 :'#'}">
+					<i class="material-icons">chevron_right</i>
+			</a>
+			</li>
+		</ul>
+	</div>
+	
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			console.log("passou aqui");
+			$(".dropdown-trigger").dropdown();
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+		    $('select').formSelect();
+		  });
+	</script>
+</body>
+</html>
